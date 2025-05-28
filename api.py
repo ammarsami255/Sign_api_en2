@@ -10,7 +10,6 @@ from werkzeug.utils import secure_filename
 import warnings
 warnings.filterwarnings("ignore", category=UserWarning)
 
-# تحميل الموديل من ملف pickle بشكل صحيح
 with open('model.p', 'rb') as f:
     model_data = pickle.load(f)
 
@@ -18,7 +17,6 @@ model = model_data.get('model', None)
 if model is None:
     raise ValueError("Model object not found in the pickle file.")
 
-# التسميات (Labels)
 labels_dict = {
     0: 'A', 1: 'B', 2: 'C', 3: 'D', 4: 'E',
     5: 'F', 6: 'G', 7: 'H', 8: 'I', 9: 'J',
@@ -58,7 +56,6 @@ def predict_video_batch():
         if not ret:
             break
 
-        # تحويل الصورة لـ RGB
         rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         results = hands.process(rgb)
 
@@ -85,7 +82,6 @@ def predict_video_batch():
     cap.release()
     os.remove(filepath)
 
-    # نرجع كل التوقعات دفعة واحدة
     return jsonify({"predictions": predictions})
 
 if __name__ == '__main__':
