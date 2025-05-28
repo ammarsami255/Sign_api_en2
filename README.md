@@ -31,6 +31,8 @@ Follow these steps to deploy this API on Render:
 
 Render will automatically deploy your application and provide you with a URL to access it.
 
+**Important Note**: Make sure the Start Command is exactly `gunicorn api:app` (not `app:app`). The error "No module named 'app'" indicates that Render might be trying to use `app:app` instead of the correct module name.
+
 ## Local Development
 
 1. Clone the repository
