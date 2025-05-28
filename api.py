@@ -37,7 +37,11 @@ hands = mp_hands.Hands(static_image_mode=False, max_num_hands=1, min_detection_c
 
 @app.route('/')
 def index():
-    return jsonify({"status": "Sign Language API is running", "endpoints": ["/predict_video_batch"]})
+    return jsonify({"status": "Sign Language API is running", "endpoints": ["/predict_video_batch", "/health"]})
+
+@app.route('/health')
+def health_check():
+    return jsonify({"status": "healthy"}), 200
 
 @app.route('/predict_video_batch', methods=['POST'])
 def predict_video_batch():

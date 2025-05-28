@@ -14,6 +14,11 @@ This API uses computer vision and machine learning to recognize sign language ge
 - `POST /predict_video_batch`: Upload a video file for sign language recognition
   - Returns filtered predictions with consecutive duplicates removed
   - Also provides raw predictions with all detected signs
+- `GET /health`: Health check endpoint to verify the API is running properly
+  - Returns a JSON response with status "healthy" and HTTP 200 OK
+  - Useful for monitoring services and deployment health checks
+
+For detailed API documentation, see [API_DOCUMENTATION.md](API_DOCUMENTATION.md).
 
 ## Deployment on Render
 
