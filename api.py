@@ -35,6 +35,10 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 mp_hands = mp.solutions.hands
 hands = mp_hands.Hands(static_image_mode=False, max_num_hands=1, min_detection_confidence=0.5)
 
+@app.route('/')
+def index():
+    return jsonify({"status": "Sign Language API is running", "endpoints": ["/predict_video_batch"]})
+
 @app.route('/predict_video_batch', methods=['POST'])
 def predict_video_batch():
     if 'video' not in request.files:
@@ -49,7 +53,7 @@ def predict_video_batch():
     video.save(filepath)
 
     cap = cv2.VideoCapture(filepath)
-    predictions = []
+    raw_predictions = []
 
     while cap.isOpened():
         ret, frame = cap.read()
@@ -77,12 +81,26 @@ def predict_video_batch():
 
                 prediction = model.predict([np.asarray(data_aux)])
                 predicted_char = labels_dict[int(prediction[0])]
-                predictions.append(predicted_char)
+                raw_predictions.append(predicted_char)
 
     cap.release()
     os.remove(filepath)
-
-    return jsonify({"predictions": predictions})
+    
+    # Remove consecutive duplicates
+    predictions = []
+    if raw_predictions:
+        predictions.append(raw_predictions[0])
+        for i in range(1, len(raw_predictions)):
+            if raw_predictions[i] != raw_predictions[i-1]:
+                predictions.append(raw_predictions[i])
+    
+    # Option to return both raw and filtered predictions
+    return jsonify({
+        "predictions": predictions,
+        "raw_predictions": raw_predictions
+    })
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    # Use environment variable for port with a default of 5000
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host='0.0.0.0', port=port)
