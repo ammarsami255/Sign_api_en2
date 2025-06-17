@@ -21,8 +21,8 @@ def send_video_and_get_predictions(video_path, api_url, show_raw=False):
 
 def main():
     parser = argparse.ArgumentParser(description='Test Sign Language Recognition API')
-    parser.add_argument('--api_url', type=str, default="http://127.0.0.1:5000/predict_video_batch",
-                        help='API endpoint URL (default: http://127.0.0.1:5000/predict_video_batch)')
+    parser.add_argument('--api_url', type=str, default="https://sign-api-en2.onrender.com/predict_video_batch",
+                        help='API endpoint URL (default: https://sign-api-en2.onrender.com/predict_video_batch)')
     parser.add_argument('--videos', nargs='+', default=['a.mp4', 'b.mp4', 'c.mp4'],
                         help='List of video files to process')
     parser.add_argument('--show_raw', action='store_true',
